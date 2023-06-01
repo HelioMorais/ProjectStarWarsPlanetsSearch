@@ -17,6 +17,18 @@ function useFilterInput(initialValue) {
     setValue(array[0]);
   };
 
+  const setAllSelectOptions = (string = column[0]) => {
+    setOptions(column);
+    setValue(string);
+  };
+
+  const setFilteredSelectOptions = (array, string) => {
+    const newArray = [...options, array[0]];
+    const optionsValue = column.filter((element) => newArray.includes(element));
+    setOptions(optionsValue);
+    setValue(string !== undefined ? string : optionsValue[0]);
+  };
+
   return {
     value,
     options,
@@ -24,6 +36,8 @@ function useFilterInput(initialValue) {
     selectOptions,
     setOptions,
     handleChange,
+    setAllSelectOptions,
+    setFilteredSelectOptions,
   };
 }
 
