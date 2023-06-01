@@ -12,9 +12,21 @@ function FilterProvider({ children }) {
   const column = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
+  const sortFilter = useFilterInput('population');
+  const radioFilter = useFilterInput('');
+  const clickSort = useClick([]);
   return (
     <FilterContext.Provider
-      value={ { filterName, column, columnFilter, comparisonFilter, valueFilter, click } }
+      value={ { filterName,
+        column,
+        columnFilter,
+        comparisonFilter,
+        valueFilter,
+        click,
+        clickSort,
+        radioFilter,
+        sortFilter,
+      } }
     >
       {children}
     </FilterContext.Provider>

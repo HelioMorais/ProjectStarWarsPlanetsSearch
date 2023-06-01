@@ -4,7 +4,33 @@ import FilterContext from '../context/FilterContext';
 
 function Table() {
   const { planets, keys } = useContext(PlanetsContext);
-  const { filterName, click } = useContext(FilterContext);
+  const { filterName, click, clickSort } = useContext(FilterContext);
+  const UNKNOWN_VALUE = -1;
+
+  function sortFilter(a, b) {
+    const { column, sort } = clickSort.value;
+
+    if (column && sort === 'ASC') {
+      const aValue = a[column];
+      const bValue = b[column];
+
+      if (!aValue.includes('unknown') && bValue.includes('unknown')) {
+        return UNKNOWN_VALUE;
+      }
+
+      if (aValue.includes('unknown') && !bValue.includes('unknown')) {
+        return 1;
+      }
+
+      return aValue - bValue;
+    }
+
+    if (column && sort === 'DESC') {
+      return b[column] - a[column];
+    }
+
+    return a;
+  }
 
   function filterMore(element) {
     const { value } = click;
@@ -32,10 +58,16 @@ function Table() {
 
   const filteredAndMappedPlanets = filteredPlanets
     .filter((element) => filterMore(element))
+    .sort((a, b) => sortFilter(a, b))
     .map((planet) => (
       <tr key={ planet.name }>
-        {Object.values(planet).map((element, index) => (
-          <td key={ `${element}${index}` }>{element}</td>
+        {Object.values(planet).map((item, index) => (
+          <td
+            key={ `${item}${index}` }
+            data-testid={ planet.name === item ? 'planet-name' : undefined }
+          >
+            {item}
+          </td>
         ))}
       </tr>
     ));

@@ -33,6 +33,7 @@ function useFilterInput(initialValue) {
     value,
     options,
     columnDel,
+    column,
     selectOptions,
     setOptions,
     handleChange,

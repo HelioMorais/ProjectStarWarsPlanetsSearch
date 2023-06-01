@@ -3,25 +3,44 @@ import FilterContext from '../context/FilterContext';
 
 function Filter() {
   const {
-    filterName, columnFilter, comparisonFilter, valueFilter, click,
+    filterName,
+    columnFilter,
+    comparisonFilter,
+    valueFilter,
+    click,
+    sortFilter,
+    radioFilter,
+    clickSort,
   } = useContext(FilterContext);
 
-  function clickButton() {
-    click.handleClickAdd([
-      columnFilter.value, comparisonFilter.value, valueFilter.value]);
+  const handleFilterAdd = () => {
+    const filterData = [
+      columnFilter.value,
+      comparisonFilter.value,
+      valueFilter.value,
+    ];
+    click.handleClickAdd(filterData);
     columnFilter.selectOptions(columnFilter.value);
-  }
-
-  const clickButtonRemoveAll = () => {
-    click.handleClickRemoveAll();
-    columnFilter
-      .setAllSelectOptions(columnFilter.value === undefined
-        ? undefined : columnFilter.value);
   };
 
-  const clickButtonRemove = (element) => {
+  const handleRemoveAllFilters = () => {
+    click.handleClickRemoveAll();
+    columnFilter.setAllSelectOptions(
+      columnFilter.value === undefined ? undefined : columnFilter.value,
+    );
+  };
+
+  const handleRemoveFilter = (element) => {
     click.handleClickRemove(element);
     columnFilter.setFilteredSelectOptions(element, columnFilter.value);
+  };
+
+  const handleSortButtonClick = () => {
+    const sortData = {
+      column: sortFilter.value,
+      sort: radioFilter.value,
+    };
+    clickSort.handleClickSort(sortData);
   };
 
   return (
@@ -42,14 +61,11 @@ function Filter() {
           onChange={ columnFilter.handleChange }
           disabled={ columnFilter.value === undefined }
         >
-          {columnFilter.options
-            .map((element) => (
-              <option
-                key={ element }
-                value={ element }
-              >
-                {element}
-              </option>))}
+          {columnFilter.options.map((element) => (
+            <option key={ element } value={ element }>
+              {element}
+            </option>
+          ))}
         </select>
 
         <select
@@ -72,7 +88,7 @@ function Filter() {
         <button
           data-testid="button-filter"
           type="button"
-          onClick={ () => clickButton() }
+          onClick={ handleFilterAdd }
           disabled={ columnFilter.value === undefined }
         >
           Adicionar Filtro
@@ -80,26 +96,64 @@ function Filter() {
         <button
           data-testid="button-remove-filters"
           type="button"
-          onClick={ clickButtonRemoveAll }
+          onClick={ handleRemoveAllFilters }
         >
           Delete todos
         </button>
         <div>
-          {click.value.length > 0 && click.value.map(([first, second, third], index) => (
-            <div
-              data-testid="filter"
-              key={ index }
-            >
+          <select
+            data-testid="column-sort"
+            onChange={ sortFilter.handleChange }
+          >
+            {columnFilter.column.map((item) => (
+              <option key={ item } value={ item }>
+                {item}
+              </option>
+            ))}
+          </select>
+
+          <div>
+            <label htmlFor="column-sort-input-asc">Ascendente</label>
+            <input
+              data-testid="column-sort-input-asc"
+              value="ASC"
+              name="sort"
+              id="column-sort-input-asc"
+              type="radio"
+              onChange={ radioFilter.handleChange }
+            />
+
+            <label htmlFor="column-sort-input-desc">Descendente</label>
+            <input
+              data-testid="column-sort-input-desc"
+              value="DESC"
+              name="sort"
+              id="column-sort-input-desc"
+              type="radio"
+              onChange={ radioFilter.handleChange }
+            />
+          </div>
+          <button
+            data-testid="column-sort-button"
+            type="button"
+            onClick={ handleSortButtonClick }
+          >
+            Ordenar
+          </button>
+        </div>
+
+        {click.value.length > 0
+          && click.value.map(([first, second, third], index) => (
+            <div data-testid="filter" key={ index }>
               <p>{`${first} ${second} ${third}`}</p>
               <button
                 type="button"
-                onClick={ () => clickButtonRemove([first, second, third]) }
+                onClick={ () => handleRemoveFilter([first, second, third]) }
               >
                 Delete Filtros
               </button>
             </div>
           ))}
-        </div>
       </div>
     </div>
   );

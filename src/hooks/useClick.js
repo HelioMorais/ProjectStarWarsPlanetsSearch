@@ -16,11 +16,16 @@ function useClick(initialValue) {
     setValue([]);
   }
 
+  function handleClickSort(info) {
+    setValue(info);
+  }
+
   return {
     value,
     handleClickAdd,
     handleClickRemove,
     handleClickRemoveAll,
+    handleClickSort,
   };
 }
 
