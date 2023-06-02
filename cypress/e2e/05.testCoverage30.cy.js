@@ -15,3 +15,4 @@ describe('5 - Desenvolva testes para atingir 30% de cobertura total da aplica√ß√
     cy.getCoverage().its('total.lines.pct', { timeout: 0 }).should('be.gte', 30.00);
   });
 });
+
