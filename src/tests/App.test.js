@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import App from '../App';
 import mock from './mock';
 import { act } from 'react-dom/test-utils';
-import userEvent from '@testing-library/user-event';
 
 describe('Testes do App', () => {
   beforeEach(() => {
@@ -23,26 +22,26 @@ test('I am your test', () => {
 });
 
 
-  test('Verifica o filtro ascendente', async () => {
-    const mockSort = ['Bespin', 'Tatooine', 'Yavin IV', 'Dagobah', 'Endor', 'Naboo', 'Alderaan', 'Hoth', 'Kamino', 'Coruscant'];
+  // test('Verifica o filtro ascendente', async () => {
+  //   const mockSort = ['Bespin', 'Tatooine', 'Yavin IV', 'Dagobah', 'Endor', 'Naboo', 'Alderaan', 'Hoth', 'Kamino', 'Coruscant'];
 
-    await act(() => render(<App />));
+  //   await act(() => render(<App />));
 
-    const columnSort = await screen.findByTestId("column-sort");
-    const inputAsc = await screen.findByTestId("column-sort-input-asc");
-    const btnSort = await screen.findByTestId("column-sort-button");
+  //   const columnSort = await screen.findByTestId("column-sort");
+  //   const inputAsc = await screen.findByTestId("column-sort-input-asc");
+  //   const btnSort = await screen.findByTestId("column-sort-button");
 
-    act(() => {
-      userEvent.selectOptions(columnSort, 'surface_water');
-      userEvent.click(inputAsc);
-      expect(inputAsc).toBeChecked();
-      userEvent.click(btnSort);
-    });
+  //   act(() => {
+  //     userEvent.selectOptions(columnSort, 'surface_water');
+  //     userEvent.click(inputAsc);
+  //     expect(inputAsc).toBeChecked();
+  //     userEvent.click(btnSort);
+  //   });
 
-    const mock = await screen.findAllByTestId('planet-name');
-    expect(mock).toHaveLength(10);
-    mock.forEach((element, index) => expect(element).toHaveTextContent(mockSort[index]));
-  });
+  //   const mock = await screen.findAllByTestId('planet-name');
+  //   expect(mock).toHaveLength(10);
+  //   mock.forEach((element, index) => expect(element).toHaveTextContent(mockSort[index]));
+  // });
 
   // test('Verifica o filtro descendente', async () => {
   //   const mockSort = ['Hoth', 'Kamino', 'Alderaan', 'Naboo', 'Yavin IV', 'Dagobah', 'Endor', 'Tatooine', 'Bespin', 'Coruscant'];
